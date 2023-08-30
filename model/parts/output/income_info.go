@@ -342,6 +342,13 @@ func (ii *IncomeInfo) AvgHopIncome() (income, count map[int]int) {
 
 func (ii *IncomeInfo) Log() {
 
+	for node, income := range ii.IncomeMap {
+		_, err := ii.Writer.WriteString(fmt.Sprintf("%d:%d\n", node, income))
+		if err != nil {
+			panic(err)
+		}
+	}
+
 	if config.GetHopIncome() {
 		avgHopIncome, avgHopCount := ii.AvgHopIncome()
 		for hop, income := range avgHopIncome {

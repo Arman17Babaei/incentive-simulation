@@ -22,6 +22,13 @@ func getNext(request types.Request, firstNodeId types.NodeId, prevNodePaid bool,
 	payDist := lastDistance
 
 	bin := config.GetBits() - general.BitLength(lastDistance)
+	if bin == -1 {
+		println("firstNodeId: ", firstNodeId)
+		println("chunkId: ", chunkId)
+		println(lastDistance)
+		println(general.BitLength(lastDistance))
+		println("bin: ", bin)
+	}
 
 	firstNodeAdjIds := graph.GetNodeAdj(firstNodeId)
 

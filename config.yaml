@@ -3,15 +3,15 @@
 # Global configuration options, defaults in comment
 BaseOptions:
   # Iterations: 10_000_000, best in multiples of 100_000
-  Iterations: 1_000_000
+  Iterations: 8192
   # Bits: 16, bits in maximum address
-  Bits: 16
+  Bits: 13
   # NetworkSize: 10000, number of nodes in network
-  NetworkSize: 10_000
+  NetworkSize: 8192
   # BinSize: 16, number of nodes in each bin/bucket for each node
-  BinSize: 16
+  BinSize: 8
   # Originators: 1000, number of originators initiating requests
-  Originators: 50
+  Originators: 1
   # RefreshRate: 8, the rate of which edge dept gets removed per second
   RefreshRate: 0
   # Threshold: 16, the maximum edge debt a node in an edge can have
@@ -19,7 +19,7 @@ BaseOptions:
   # RandomSeed: 123456789, seed for deterministic randomness
   RandomSeed: 123456789
   # MaxProximityOrder: 16, determines how many accounting units is transferred according to distance from chunk.
-  MaxProximityOrder: 16
+  MaxProximityOrder: 13
   # Price: 1, the base unit for prices
   Price: 1
   # RequestsPerSecond: 12500, number of iterations during a second
@@ -29,7 +29,7 @@ BaseOptions:
   # SameOriginator: false, makes the same originator request many times in a row
   SameOriginator: false
   # IterationMeansUniqueChunk: false, if a chunk chosen again by waiting/retry counts as an iteration
-  IterationMeansUniqueChunk: false
+  IterationMeansUniqueChunk: true
   # RetryCausesTimeIncrease: false, if retry counts towards the x requests an originator makes per second
   RetryCausesTimeIncrease: false
   # DebugPrints: false, enables some useful prints to terminal during the run
@@ -41,7 +41,7 @@ BaseOptions:
   # Enabled the outputWorker which handles writing output to file and analysis of results
   OutputEnabled: true
   # How many nodes are responsible to store a chunk, if possible
-  ReplicationFactor: 4
+  ReplicationFactor: 1
   # The exponent used for the adjustable threshold formula
   AdjustableThresholdExponent: 3
   # The maximum number of requests an originator is going to originate, leave non-positive for no limit

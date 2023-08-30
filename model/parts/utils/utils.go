@@ -94,6 +94,12 @@ func CreateDownloadersList(g *types.Graph) []types.NodeId {
 	//fmt.Println("Creating downloaders list...")
 
 	downloadersList := make([]types.NodeId, 0)
+
+	if config.GetOriginators() == 1 {
+		downloadersList = append(downloadersList, 0)
+		return downloadersList
+	}
+
 	counter := 0
 	for _, originator := range g.NodesMap {
 		downloadersList = append(downloadersList, originator.Id)

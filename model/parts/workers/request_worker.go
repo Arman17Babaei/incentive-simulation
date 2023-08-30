@@ -72,7 +72,7 @@ func RequestWorker(pauseChan chan bool, continueChan chan bool, requestChan chan
 			}
 
 			if chunkId == -1 { // No waiting and no retry, and qualify for unique chunk
-				chunkId = utils.GetNewChunkId()
+				chunkId = types.ChunkId(counter % config.GetAddressRange())
 
 				if config.IsPreferredChunksEnabled() {
 					chunkId = utils.GetPreferredChunkId()

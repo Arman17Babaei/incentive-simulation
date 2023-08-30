@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"math/rand"
 	"os"
 	"sync"
@@ -160,8 +161,10 @@ func (network *Network) node(nodeId NodeId) *Node {
 }
 
 func (network *Network) Generate(count int, random bool) []*Node {
-	nodeIds := generateIds(count, (1<<network.Bits)-1)
-	if !random {
+	var nodeIds []int
+	if random {
+		nodeIds = generateIds(count, (1<<network.Bits)-1)
+	} else {
 		nodeIds = generateIdsEven(count, (1<<network.Bits)-1)
 	}
 	nodes := make([]*Node, 0)
@@ -245,7 +248,11 @@ func generateIdsEven(totalNumbers int, maxValue int) []int {
 	result := make([]int, 0, totalNumbers)
 	step := float64(maxValue) / float64(totalNumbers)
 	for id := 0.0; id < float64(maxValue); id += step {
-		result = append(result, int(id))
+		roundedId := int(math.Round(id))
+		if len(result) > 0 && roundedId == result[len(result)-1] {
+			continue
+		}
+		result = append(result, roundedId)
 	}
 	if len(result) < totalNumbers {
 		result = append(result, maxValue)
