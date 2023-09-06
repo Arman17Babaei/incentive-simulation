@@ -71,6 +71,7 @@ func (s *State) GetOriginatorId(originatorIndex int) NodeId {
 			}
 			// The new node is not going to get requests
 			newNode.Deactivate()
+			newNode.ChunksQueueStruct = node.ChunksQueueStruct
 			s.Originators[originatorIndex] = newNode.Id
 		}
 	}

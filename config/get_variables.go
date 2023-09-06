@@ -333,6 +333,20 @@ func GetExperimentString() (exp string) {
 	if IsAdjustableThreshold() {
 		exp += "FgAdj"
 	}
+	if GetAddressChangeThreshold() > 0 {
+		exp += "AddChangeTh-"
+		exp += strconv.Itoa(GetAddressChangeThreshold())
+	}
+	if GetOriginatorShuffleProbability() > 0 {
+		exp += "OrgShProb-"
+		s := fmt.Sprintf("%v", GetOriginatorShuffleProbability())
+		exp += s
+	}
+	if GetNonOriginatorShuffleProbability() > 0 {
+		exp += "NonOrgShProb-"
+		s := fmt.Sprintf("%v", GetNonOriginatorShuffleProbability())
+		exp += s
+	}
 
 	exp += "-" + GetExpeimentId()
 	return exp
