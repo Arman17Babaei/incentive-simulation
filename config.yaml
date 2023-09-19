@@ -110,13 +110,25 @@ CustomExperiment:
   # PayIfOrigPays: false, only pay if the originator pays -- NOT NEEDED
   PayIfOrigPays: false
   # CacheIsEnabled: false, cache on nodes which stores chunks the node have seen before
-  CacheIsEnabled: false
+  CacheIsEnabled: true
   # cache size
   CacheSize: 10_000 # this is for 40 megabytes
   # different cache models
   CacheModel:
     # a base line can be the unlimited cache.
     Unlimited: false
+    # if the content is far away then cache it (brings more reward)
+    NonProximity: true
+    # remove the least recently used chunk if cache is full (Least Recently Used)
+    LRU: false
+    # remove the least frequently used chunk if cache is full (Least Frequently Used)
+    LFU: false
+
+  # DifferentGatewayCacheIsEnabled: false, use a different cache model for gateways  
+  DifferentGatewayCacheIsEnabled: true
+  GatewayCacheModel:
+    # a base line can be the unlimited cache.
+    Unlimited: true
     # if the content is far away then cache it (brings more reward)
     NonProximity: false
     # remove the least recently used chunk if cache is full (Least Recently Used)
