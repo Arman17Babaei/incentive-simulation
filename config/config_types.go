@@ -56,8 +56,10 @@ type experimentOptions struct {
 	AdjustableThreshold               bool       `yaml:"AdjustableThreshold"`
 	PayIfOrigPays                     bool       `yaml:"PayIfOrigPays"`
 	CacheIsEnabled                    bool       `yaml:"CacheIsEnabled"`
+	DifferentGatewayCacheIsEnabled    bool       `yaml:"DifferentGatewayCacheIsEnabled"`
 	CacheSize                         int        `yaml:"CacheSize"`
 	CacheModel                        cacheModel `yaml:"CacheModel"`
+	GatewayCacheModel                 cacheModel `yaml:"GatewayCacheModel"`
 }
 
 type outputOptions struct {

@@ -66,8 +66,15 @@ func getDefaultConfig() Config {
 			PreferredChunks:                   false, // false
 			AdjustableThreshold:               false, // false
 			CacheIsEnabled:                    false, // false
+			DifferentGatewayCacheIsEnabled:    false, // false
 			CacheSize:                         100000,
-			CacheModel: cacheModel{
+			CacheModel: cacheModel {
+				Unlimited:    false,
+				NonProximity: false,
+				LRU:          false,
+				LFU:          false,
+			},
+			GatewayCacheModel: cacheModel {
 				Unlimited:    false,
 				NonProximity: false,
 				LRU:          false,

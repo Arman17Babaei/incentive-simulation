@@ -48,23 +48,27 @@ type (
 	}
 )
 
-func GetCachePolicy() CachePolicy {
+func GetCachePolicy(policy int) CachePolicy {
+	switch policy {
+	case 0:
+		return &unlimitedPolicy{}
+	case 1:
+		return &proximityPolicy{ChunkSet: sortedset.New[ChunkId, int, CacheData]()}
+	case 2:
+		return &lruPolicy{ChunkSet: sortedset.New[ChunkId, int, CacheData]()}
+	case 3:
+		return &lfuPolicy{ChunkSet: sortedset.New[ChunkId, int, CacheData]()}
+	default:
+		return nil
+	}
+}
+
+func GetConfigCachePolicy() CachePolicy {
 	policy := config.GetCacheModel()
 	if policy == -1 {
 		return nil
 	}
-
-	if policy == 0 {
-		return &unlimitedPolicy{}
-	} else if policy == 1 {
-		return &proximityPolicy{ChunkSet: sortedset.New[ChunkId, int, CacheData]()}
-	} else if policy == 2 {
-		return &lruPolicy{ChunkSet: sortedset.New[ChunkId, int, CacheData]()}
-	} else if policy == 3 {
-		return &lfuPolicy{ChunkSet: sortedset.New[ChunkId, int, CacheData]()}
-	} else {
-		return nil
-	}
+	return GetCachePolicy(policy)
 }
 
 func FindDistance(chunkId ChunkId, nodeId NodeId) int {
@@ -110,7 +114,6 @@ func (p *unlimitedPolicy) UpdateCacheMap(c *CacheStruct, newChunkId ChunkId, dis
 
 func (p *proximityPolicy) UpdateCacheMap(c *CacheStruct, newChunkId ChunkId, distance int) {
 	p.ChunkSet.AddOrUpdate(newChunkId, distance, CacheData{distance, time.Now(), 1})
-
 	if len(c.CacheMap) <= int(c.Size) {
 		return
 	}

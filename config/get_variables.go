@@ -60,6 +60,10 @@ func IsCacheEnabled() bool {
 	return theconfig.ExperimentOptions.CacheIsEnabled
 }
 
+func IsDifferentGatewayCacheEnabled() bool {
+	return theconfig.ExperimentOptions.DifferentGatewayCacheIsEnabled
+}
+
 func GetCacheSize() int {
 	return theconfig.ExperimentOptions.CacheSize
 }
@@ -364,6 +368,25 @@ func GetCacheModel() int {
 			return 2
 		}
 		if theconfig.ExperimentOptions.CacheModel.LFU {
+			return 3
+		}
+	}
+
+	return -1
+}
+
+func GetGatewaysCacheModel() int {
+	if IsDifferentGatewayCacheEnabled() {
+		if theconfig.ExperimentOptions.GatewayCacheModel.Unlimited {
+			return 0
+		}
+		if theconfig.ExperimentOptions.GatewayCacheModel.NonProximity {
+			return 1
+		}
+		if theconfig.ExperimentOptions.GatewayCacheModel.LRU {
+			return 2
+		}
+		if theconfig.ExperimentOptions.GatewayCacheModel.LFU {
 			return 3
 		}
 	}

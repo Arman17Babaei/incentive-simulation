@@ -1,23 +1,17 @@
 package types
 
 import (
-	"go-incentive-simulation/config"
 	"sync"
 	"testing"
 )
 
-const path = "../../../"
-
 func TestAddToCache_Unlimited(t *testing.T) {
-	config.InitConfigWithPath(path)
-	config.SetCacheModel(0)
-
 	cache := CacheStruct{
 		Size:           3,
 		CacheMap:       make(CacheMap),
 		CacheFreqMap:   make(CacheFreqMap),
 		CacheMutex:     &sync.Mutex{},
-		EvictionPolicy: GetCachePolicy(),
+		EvictionPolicy: GetCachePolicy(0),
 	}
 
 	for i := 0; i < 100; i++ {
@@ -32,15 +26,12 @@ func TestAddToCache_Unlimited(t *testing.T) {
 }
 
 func TestAddToCache_Proximity(t *testing.T) {
-	config.InitConfig()
-	config.SetCacheModel(1)
-
 	cache := CacheStruct{
 		Size:           3,
 		CacheMap:       make(CacheMap),
 		CacheFreqMap:   make(CacheFreqMap),
 		CacheMutex:     &sync.Mutex{},
-		EvictionPolicy: GetCachePolicy(),
+		EvictionPolicy: GetCachePolicy(1),
 	}
 
 	// 79 = 64 + 8 + 4 + 2 + 1,
@@ -65,15 +56,12 @@ func TestAddToCache_Proximity(t *testing.T) {
 }
 
 func TestAddToCache_LeastRecentUsed(t *testing.T) {
-	config.InitConfig()
-	config.SetCacheModel(2)
-
 	cache := CacheStruct{
 		Size:           3,
 		CacheMap:       make(CacheMap),
 		CacheFreqMap:   make(CacheFreqMap),
 		CacheMutex:     &sync.Mutex{},
-		EvictionPolicy: GetCachePolicy(),
+		EvictionPolicy: GetCachePolicy(2),
 	}
 
 	cache.AddToCache(ChunkId(1), NodeId(1))
@@ -100,15 +88,12 @@ func TestAddToCache_LeastRecentUsed(t *testing.T) {
 }
 
 func TestAddToCache_LeastFrequentlyUsed(t *testing.T) {
-	config.InitConfig()
-	config.SetCacheModel(3)
-
 	cache := CacheStruct{
 		Size:           3,
 		CacheMap:       make(CacheMap),
 		CacheFreqMap:   make(CacheFreqMap),
 		CacheMutex:     &sync.Mutex{},
-		EvictionPolicy: GetCachePolicy(),
+		EvictionPolicy: GetCachePolicy(3),
 	}
 
 	for i := 0; i < 1; i++ {
@@ -141,15 +126,12 @@ func TestAddToCache_LeastFrequentlyUsed(t *testing.T) {
 }
 
 func TestCacheStruct_Contains(t *testing.T) {
-	config.InitConfig()
-	config.SetCacheModel(0)
-
 	cache := CacheStruct{
 		Size:           3,
 		CacheMap:       make(CacheMap),
 		CacheFreqMap:   make(CacheFreqMap),
 		CacheMutex:     &sync.Mutex{},
-		EvictionPolicy: GetCachePolicy(),
+		EvictionPolicy: GetCachePolicy(0),
 	}
 
 	network := &Network{}

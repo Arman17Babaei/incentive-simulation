@@ -126,31 +126,3 @@ func SetRandomSeed() {
 		theconfig.BaseOptions.RandomSeed = time.Now().UnixNano()
 	}
 }
-
-func SetCacheModel(cacheMoelInt int) {
-	theconfig.ExperimentOptions.CacheIsEnabled = true
-	cacheModel := cacheModel{}
-	switch cacheMoelInt {
-	case 0:
-		cacheModel.Unlimited = true
-		cacheModel.NonProximity = false
-		cacheModel.LRU = false
-		cacheModel.LFU = false
-	case 1:
-		cacheModel.Unlimited = false
-		cacheModel.NonProximity = true
-		cacheModel.LRU = false
-		cacheModel.LFU = false
-	case 2:
-		cacheModel.Unlimited = false
-		cacheModel.NonProximity = false
-		cacheModel.LRU = true
-		cacheModel.LFU = false
-	case 3:
-		cacheModel.Unlimited = false
-		cacheModel.NonProximity = false
-		cacheModel.LRU = false
-		cacheModel.LFU = true
-	}
-	theconfig.ExperimentOptions.CacheModel = cacheModel
-}

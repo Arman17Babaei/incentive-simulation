@@ -195,9 +195,14 @@ func CreateDownloadersList(g *types.Graph) []types.NodeId {
 
 	downloadersList := make([]types.NodeId, 0)
 	counter := 0
+	gatewaysPolicy := config.GetGatewaysCacheModel()
+	if gatewaysPolicy == -1 {
+		gatewaysPolicy = config.GetCacheModel()
+	}
 	for _, originator := range g.NodesMap {
 		downloadersList = append(downloadersList, originator.Id)
 		originator.IsOriginator = true
+		originator.CacheStruct.EvictionPolicy = types.GetCachePolicy(gatewaysPolicy)
 		counter++
 		if counter >= config.GetOriginators() {
 			break
