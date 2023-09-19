@@ -1,14 +1,16 @@
 package types
 
 import (
-	"github.com/zavitax/sortedset-go"
 	"go-incentive-simulation/config"
 	"go-incentive-simulation/model/general"
 	"sync"
 	"time"
+
+	"github.com/zavitax/sortedset-go"
 )
 
 type CacheMap map[ChunkId]CacheData
+type CacheFreqMap map[ChunkId]int
 
 type CacheData struct {
 	Proximity    int
@@ -20,6 +22,7 @@ type CacheStruct struct {
 	Size           int
 	Node           *Node
 	CacheMap       CacheMap
+	CacheFreqMap   CacheFreqMap
 	CacheMutex     *sync.Mutex
 	EvictionPolicy CachePolicy
 }
@@ -73,6 +76,14 @@ func (c *CacheStruct) AddToCache(chunkId ChunkId, nodeId NodeId) CacheMap {
 	defer c.CacheMutex.Unlock()
 	distance := FindDistance(chunkId, nodeId)
 
+	freq := 1
+	if _, ok := c.CacheFreqMap[chunkId]; ok {
+		c.CacheFreqMap[chunkId]++
+		freq = c.CacheFreqMap[chunkId]
+	} else {
+		c.CacheFreqMap[chunkId] = 1
+	}
+
 	if _, ok := c.CacheMap[chunkId]; ok {
 		currData := c.CacheMap[chunkId]
 		currData.Frequency++
@@ -82,7 +93,7 @@ func (c *CacheStruct) AddToCache(chunkId ChunkId, nodeId NodeId) CacheMap {
 		newCacheData := CacheData{
 			Proximity:    distance,
 			LastTimeUsed: time.Now(),
-			Frequency:    1,
+			Frequency:    freq,
 		}
 		c.CacheMap[chunkId] = newCacheData
 	}
@@ -124,6 +135,10 @@ func (p *lfuPolicy) UpdateCacheMap(c *CacheStruct, newChunkId ChunkId, distance 
 	freq := 1
 	if prev != nil {
 		freq = prev.Value.Frequency + 1
+	}
+
+	if _, exists := c.CacheFreqMap[newChunkId]; exists {
+		freq = c.CacheFreqMap[newChunkId]
 	}
 
 	p.ChunkSet.AddOrUpdate(newChunkId, freq, CacheData{distance, time.Now(), freq})

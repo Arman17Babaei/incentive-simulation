@@ -15,6 +15,7 @@ func TestAddToCache_Unlimited(t *testing.T) {
 	cache := CacheStruct{
 		Size:           3,
 		CacheMap:       make(CacheMap),
+		CacheFreqMap:   make(CacheFreqMap),
 		CacheMutex:     &sync.Mutex{},
 		EvictionPolicy: GetCachePolicy(),
 	}
@@ -37,6 +38,7 @@ func TestAddToCache_Proximity(t *testing.T) {
 	cache := CacheStruct{
 		Size:           3,
 		CacheMap:       make(CacheMap),
+		CacheFreqMap:   make(CacheFreqMap),
 		CacheMutex:     &sync.Mutex{},
 		EvictionPolicy: GetCachePolicy(),
 	}
@@ -69,6 +71,7 @@ func TestAddToCache_LeastRecentUsed(t *testing.T) {
 	cache := CacheStruct{
 		Size:           3,
 		CacheMap:       make(CacheMap),
+		CacheFreqMap:   make(CacheFreqMap),
 		CacheMutex:     &sync.Mutex{},
 		EvictionPolicy: GetCachePolicy(),
 	}
@@ -103,21 +106,23 @@ func TestAddToCache_LeastFrequentlyUsed(t *testing.T) {
 	cache := CacheStruct{
 		Size:           3,
 		CacheMap:       make(CacheMap),
+		CacheFreqMap:   make(CacheFreqMap),
 		CacheMutex:     &sync.Mutex{},
 		EvictionPolicy: GetCachePolicy(),
 	}
 
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 1; i++ {
 		cache.AddToCache(ChunkId(1), NodeId(1))
 	}
-	for i := 0; i < 2; i++ {
+	for i := 0; i < 1; i++ {
 		cache.AddToCache(ChunkId(2), NodeId(1))
 	}
-	for i := 0; i < 8; i++ {
+	for i := 0; i < 1; i++ {
 		cache.AddToCache(ChunkId(8), NodeId(1))
 	}
 
 	cache.AddToCache(ChunkId(4), NodeId(1))
+	cache.AddToCache(ChunkId(1), NodeId(1))
 
 	// 4 should be removed, but there's not way for it to make it into the cache
 	if _, exists := cache.CacheMap[ChunkId(2)]; exists {
@@ -142,6 +147,7 @@ func TestCacheStruct_Contains(t *testing.T) {
 	cache := CacheStruct{
 		Size:           3,
 		CacheMap:       make(CacheMap),
+		CacheFreqMap:   make(CacheFreqMap),
 		CacheMutex:     &sync.Mutex{},
 		EvictionPolicy: GetCachePolicy(),
 	}

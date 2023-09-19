@@ -130,6 +130,7 @@ func (network *Network) node(nodeId NodeId) *Node {
 		CacheStruct: CacheStruct{
 			Size:           config.GetCacheSize(),
 			CacheMap:       make(CacheMap),
+			CacheFreqMap:   make(CacheFreqMap),
 			CacheMutex:     &sync.Mutex{},
 			EvictionPolicy: GetCachePolicy(),
 		},
